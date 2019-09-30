@@ -54,15 +54,27 @@ esac
 
 
 
-# cd $CACHE_DIR
-
 topic "Updating apt caches"
 apt-get $APT_OPTIONS update | indent
 apt-get $APT_OPTIONS upgrade | indent
-apt-get $APT_OPTIONS install $PACKAGES | indent
 
-git clone https://github.com/tdlib/td.git
-cd td
+for PACKAGE in $PACKAGES; do
+  if [[ $PACKAGE == *deb ]]; then
+    PACKAGE_NAME=$(basename $PACKAGE .deb)
+    PACKAGE_FILE=$APT_CACHE_DIR/archives/$PACKAGE_NAME.deb
+
+    topic "Fetching $PACKAGE"
+    curl -s -L -z $PACKAGE_FILE -o $PACKAGE_FILE $PACKAGE 2>&1 | indent
+  else
+    topic "Fetching .debs for $PACKAGE"
+    apt-get $APT_OPTIONS -y $APT_FLAGS -d install --reinstall $PACKAGE | indent
+  fi
+done
+
+mkdir -p $BUILD_DIR/.tdlib
+
+git clone https://github.com/tdlib/td.git $BUILD_DIR/.tdlib
+cd $BUILD_DIR/.tdlib
 rm -rf build
 mkdir build
 cd build

@@ -82,8 +82,7 @@ apt-get $APT_OPTIONS install -y $PACKAGES | indent
 # ls -R $BUILD_DIR/.apt/
 
 ls -lah
-ls -lah /usr/bin/
-ls -lah /opt/cmake/bin
+dpkg -L cmake
 
 mkdir -p $BUILD_DIR/.tdlib
 

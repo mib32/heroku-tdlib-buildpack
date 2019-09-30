@@ -57,6 +57,7 @@ esac
 topic "Updating apt caches"
 apt-get $APT_OPTIONS update | indent
 apt-get $APT_OPTIONS upgrade | indent
+# apt-get $APT_OPTIONS install -y $PACKAGES | indent
 
 for PACKAGE in $PACKAGES; do
   if [[ $PACKAGE == *deb ]]; then
@@ -77,6 +78,8 @@ for DEB in $(ls -1 $APT_CACHE_DIR/archives/*.deb); do
   topic "Installing $(basename $DEB)"
   dpkg -x $DEB $BUILD_DIR/.apt/
 done
+
+ls -R $BUILD_DIR/.apt/
 
 mkdir -p $BUILD_DIR/.tdlib
 

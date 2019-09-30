@@ -81,6 +81,8 @@ apt-get $APT_OPTIONS install -y $PACKAGES | indent
 #
 # ls -R $BUILD_DIR/.apt/
 
+ls -lah 
+
 mkdir -p $BUILD_DIR/.tdlib
 
 git clone https://github.com/tdlib/td.git $BUILD_DIR/.tdlib

@@ -71,6 +71,13 @@ for PACKAGE in $PACKAGES; do
   fi
 done
 
+mkdir -p $BUILD_DIR/.apt
+
+for DEB in $(ls -1 $APT_CACHE_DIR/archives/*.deb); do
+  topic "Installing $(basename $DEB)"
+  dpkg -x $DEB $BUILD_DIR/.apt/
+done
+
 mkdir -p $BUILD_DIR/.tdlib
 
 git clone https://github.com/tdlib/td.git $BUILD_DIR/.tdlib

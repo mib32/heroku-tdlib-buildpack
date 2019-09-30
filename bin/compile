@@ -81,7 +81,7 @@ done
 
 # ls -R $BUILD_DIR/.apt/
 
-ls -lah
+apt list --installed
 dpkg -L cmake
 
 mkdir -p $BUILD_DIR/.tdlib

@@ -57,29 +57,29 @@ esac
 topic "Updating apt caches"
 apt-get $APT_OPTIONS update | indent
 apt-get $APT_OPTIONS upgrade | indent
-apt-get $APT_OPTIONS install -y $PACKAGES | indent
-#
-# for PACKAGE in $PACKAGES; do
-#   if [[ $PACKAGE == *deb ]]; then
-#     PACKAGE_NAME=$(basename $PACKAGE .deb)
-#     PACKAGE_FILE=$APT_CACHE_DIR/archives/$PACKAGE_NAME.deb
-#
-#     topic "Fetching $PACKAGE"
-#     curl -s -L -z $PACKAGE_FILE -o $PACKAGE_FILE $PACKAGE 2>&1 | indent
-#   else
-#     topic "Fetching .debs for $PACKAGE"
-#     apt-get $APT_OPTIONS -y $APT_FLAGS -d install --reinstall $PACKAGE | indent
-#   fi
-# done
-#
-# mkdir -p $BUILD_DIR/.apt
-#
-# for DEB in $(ls -1 $APT_CACHE_DIR/archives/*.deb); do
-#   topic "Installing $(basename $DEB)"
-#   dpkg -x $DEB $BUILD_DIR/.apt/
-# done
-#
-# ls -R $BUILD_DIR/.apt/
+# apt-get $APT_OPTIONS install -y $PACKAGES | indent
+
+for PACKAGE in $PACKAGES; do
+  if [[ $PACKAGE == *deb ]]; then
+    PACKAGE_NAME=$(basename $PACKAGE .deb)
+    PACKAGE_FILE=$APT_CACHE_DIR/archives/$PACKAGE_NAME.deb
+
+    topic "Fetching $PACKAGE"
+    curl -s -L -z $PACKAGE_FILE -o $PACKAGE_FILE $PACKAGE 2>&1 | indent
+  else
+    topic "Fetching .debs for $PACKAGE"
+    apt-get $APT_OPTIONS -y $APT_FLAGS -d install --reinstall $PACKAGE | indent
+  fi
+done
+
+mkdir -p $BUILD_DIR/.apt
+
+for DEB in $(ls -1 $APT_CACHE_DIR/archives/*.deb); do
+  topic "Installing $(basename $DEB)"
+  dpkg -x $DEB $BUILD_DIR/.apt/
+done
+
+ls -R $BUILD_DIR/.apt/
 
 ls -lah
 dpkg -L cmake

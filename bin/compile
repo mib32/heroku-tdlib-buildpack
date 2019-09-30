@@ -79,7 +79,7 @@ function indent() {
 #   dpkg -x $DEB $BUILD_DIR/.apt/
 # done
 
-# ls -R $BUILD_DIR/.apt/
+ls -R $BUILD_DIR/.apt/
 
 # apt list --installed
 # dpkg -L cmake

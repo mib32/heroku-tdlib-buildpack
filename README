@@ -1,0 +1,13 @@
+### Usage
+
+Add Heroku Apt buildpack
+
+```
+heroku buildpacks:add --index 1 https://github.com/heroku/heroku-buildpack-apt
+```
+
+Add file named 'Aptfile' to your app root folder with this inside:
+
+```
+make git zlib1g-dev libssl-dev gperf php cmake clang libc++-dev
+```
